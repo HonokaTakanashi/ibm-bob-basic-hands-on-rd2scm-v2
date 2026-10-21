@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>よくある質問 | Bob FAQ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved === "dark" || saved === "light") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+  <header class="site-header">
+    <div class="container">
+      <a class="site-header-logo" href="https://www.ibm.com/products/bob" target="_blank" rel="noopener noreferrer">
+        <img src="bob.svg" alt="Bob" width="48" height="48">
+      </a>
+      <div class="site-header-title">
+        <h1>よくある質問</h1>
+        <p class="subtitle">Bobに関するよくある質問と回答をまとめています。</p>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="ダークテーマに切り替え" aria-pressed="false">🌙</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="search">
+      <label for="search-input" class="search-label">キーワードで検索</label>
+      <input id="search-input" class="search-input" type="search" placeholder="例: モード、MCP、コマンド" autocomplete="off">
+      <p id="result-count" class="sr-only" aria-live="polite"></p>
+    </div>
+
+    <div id="faq-root"></div>
+
+    <p id="empty-state" class="empty-state" hidden>該当する質問が見つかりませんでした。別のキーワードでお試しください。</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>このFAQは qa.md を元に日本語化したものです。</p>
+    </div>
+  </footer>
+
+  <script src="faq-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
