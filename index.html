@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IBM Bob FAQ - よくあるご質問</title>
+  <link rel="icon" type="image/svg+xml" href="bob.svg">
+  <script>
+    // Apply theme before first paint: saved choice > OS preference
+    (function () {
+      var theme = null;
+      try {
+        var saved = localStorage.getItem('theme');
+        if (saved === 'light' || saved === 'dark') theme = saved;
+      } catch (e) { /* localStorage unavailable */ }
+      if (!theme) {
+        theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    /* Carbon Design System Inspired Palette & Styles */
+    :root {
+      color-scheme: light;
+      /* Bob brand colors (from bob.svg hat gradient) */
+      --brand-blue: #0f62fe;
+      --brand-purple: #a56eff;
+      --brand-gradient: linear-gradient(135deg, #0f62fe 0%, #a56eff 100%);
+      --accent: #0f62fe;
+      --cds-ui-hover: #fafafa;
+      --cds-ui-divider: #f0f0f0;
+      --cds-border-hover: #c6c6c6;
+      --action-hover: #e8e8e8;
+      --code-bg: #e8e8e8;
+      --answer-bg: #ffffff;
+      --badge-bg: rgba(0, 0, 0, 0.08);
+      --search-bg: #ffffff;
+      --search-text: #161616;
+      --search-clear-hover: #e0e0e0;
+      --cds-interactive-01: #0f62fe; /* IBM Blue */
+      --cds-interactive-01-hover: #0353e9;
+      --cds-interactive-01-active: #002d9c;
+      --cds-ui-background: #ffffff;
+      --cds-ui-01: #f4f4f4;
+      --cds-ui-02: #ffffff;
+      --cds-ui-03: #e0e0e0;
+      --cds-text-01: #161616;
+      --cds-text-02: #525252;
+      --cds-text-03: #8d8d8d;
+      --cds-link-01: #0f62fe;
+      --cds-focus: #0f62fe;
+      --cds-danger: #da1e28;
+      --cds-highlight: #fff275;
+      --cds-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      --cds-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "IBM Plex Sans", sans-serif;
+      --transition: all 0.2s cubic-bezier(0.2, 0, 0.38, 0.9);
+    }
+
+    /* Dark theme (Carbon Gray 100 based) */
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --accent: #78a9ff;
+      --cds-ui-background: #161616;
+      --cds-ui-01: #161616;
+      --cds-ui-02: #262626;
+      --cds-ui-03: #393939;
+      --cds-ui-hover: #333333;
+      --cds-ui-divider: #393939;
+      --cds-border-hover: #6f6f6f;
+      --action-hover: #393939;
+      --code-bg: #393939;
+      --answer-bg: #262626;
+      --badge-bg: rgba(255, 255, 255, 0.14);
+      --search-bg: #262626;
+      --search-text: #f4f4f4;
+      --search-clear-hover: #393939;
+      --cds-text-01: #f4f4f4;
+      --cds-text-02: #c6c6c6;
+      --cds-text-03: #a8a8a8;
+      --cds-link-01: #78a9ff;
+      --cds-focus: #ffffff;
+      --cds-highlight: #f1c21b;
+      --cds-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      --cds-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--cds-ui-01);
+      color: var(--cds-text-01);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background-color: #161616;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      border-bottom: 1px solid #393939;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      background: var(--brand-gradient);
+    }
+
+    .header-container {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #ffffff;
+    }
+
+    .header-logo-link {
+      display: block;
+      line-height: 0;
+      border-radius: 4px;
+    }
+
+    .header-logo-link:focus-visible,
+    .theme-toggle:focus-visible,
+    .lang-btn:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    .header-logo img {
+      width: 40px;
+      height: 40px;
+      display: block;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      background: #262626;
+      border: 1px solid #393939;
+      border-radius: 4px;
+      color: #c6c6c6;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      color: #ffffff;
+      background: #393939;
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Show moon in light theme, sun in dark theme */
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+    .header-logo-text {
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .lang-switcher {
+      display: flex;
+      background: #262626;
+      border: 1px solid #393939;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: #c6c6c6;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .lang-btn:hover {
+      color: #ffffff;
+      background: #393939;
+    }
+
+    .lang-btn.active {
+      background: var(--brand-gradient);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* Hero Section */
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(15, 98, 254, 0.6) 0%, rgba(165, 110, 255, 0.5) 100%),
+        linear-gradient(180deg, #161616 0%, #262626 100%);
+      color: #ffffff;
+      padding: 3.5rem 1.5rem 3rem;
+      text-align: center;
+    }
+
+    .hero-container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: #f4f4f4;
+      margin-bottom: 2rem;
+    }
+
+    /* Search Bar */
+    .search-box {
+      position: relative;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      fill: #8d8d8d;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.95rem 2.75rem 0.95rem 2.85rem;
+      font-size: 1rem;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      background: var(--search-bg);
+      color: var(--search-text);
+      outline: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--brand-purple);
+    }
+
+    .search-input::placeholder {
+      color: var(--cds-text-02);
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #8d8d8d;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      line-height: 1;
+      transition: var(--transition);
+    }
+
+    .search-clear:hover {
+      background: var(--search-clear-hover);
+      color: var(--cds-text-01);
+    }
+
+    .search-clear.visible {
+      display: flex;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* Category Nav */
+    .category-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+      justify-content: center;
+    }
+
+    .cat-btn {
+      background: var(--cds-ui-02);
+      border: 1px solid var(--cds-ui-03);
+      color: var(--cds-text-02);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .cat-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .cat-btn.active {
+      background: var(--brand-gradient);
+      border-color: transparent;
+      color: #ffffff;
+    }
+
+    .cat-badge {
+      font-size: 0.75rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 10px;
+      background: var(--badge-bg);
+    }
+
+    .cat-btn.active .cat-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    /* Tool bar (counts & toggle all) */
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--cds-ui-03);
+    }
+
+    .results-count {
+      font-size: 0.95rem;
+      color: var(--cds-text-02);
+      font-weight: 500;
+    }
+
+    .toggle-all-btns {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      background: transparent;
+      border: 1px solid var(--cds-ui-03);
+      color: var(--cds-text-02);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.825rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .action-btn:hover {
+      background: var(--action-hover);
+      color: var(--cds-text-01);
+    }
+
+    /* FAQ Sections */
+    .faq-category-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .faq-category-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--cds-text-01);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .faq-category-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1.15rem;
+      background: var(--brand-gradient);
+      border-radius: 2px;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* FAQ Item Card */
+    .faq-item {
+      background: var(--cds-ui-02);
+      border: 1px solid var(--cds-ui-03);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: var(--cds-shadow);
+      transition: var(--transition);
+    }
+
+    .faq-item:hover {
+      border-color: var(--cds-border-hover);
+      box-shadow: var(--cds-shadow-hover);
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 1.15rem 1.25rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--cds-text-01);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      transition: var(--transition);
+    }
+
+    .faq-question:hover {
+      background-color: var(--cds-ui-hover);
+    }
+
+    .faq-question:focus-visible {
+      outline: 2px solid var(--cds-focus);
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      fill: var(--cds-text-02);
+      transition: transform 0.25s cubic-bezier(0.2, 0, 0.38, 0.9);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+      fill: var(--accent);
+    }
+
+    .faq-answer-wrapper {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.2, 0, 0.38, 0.9);
+      background-color: var(--answer-bg);
+    }
+
+    .faq-answer {
+      padding: 0 1.25rem 1.25rem;
+      color: var(--cds-text-02);
+      font-size: 0.975rem;
+      line-height: 1.7;
+      border-top: 1px solid var(--cds-ui-divider);
+      padding-top: 1rem;
+    }
+
+    .faq-answer p {
+      margin-bottom: 0.75rem;
+    }
+
+    .faq-answer p:last-child {
+      margin-bottom: 0;
+    }
+
+    .faq-answer ul {
+      margin: 0.5rem 0 0.75rem 1.5rem;
+    }
+
+    .faq-answer li {
+      margin-bottom: 0.35rem;
+    }
+
+    .faq-answer strong {
+      color: var(--cds-text-01);
+    }
+
+    .faq-answer code {
+      background: var(--code-bg);
+      padding: 0.15rem 0.35rem;
+      border-radius: 3px;
+      font-family: "IBM Plex Mono", Consolas, Menlo, monospace;
+      font-size: 0.88em;
+    }
+
+    mark.highlight {
+      background-color: var(--cds-highlight);
+      color: #161616;
+      padding: 0.1rem 0.2rem;
+      border-radius: 2px;
+    }
+
+    /* Empty State */
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 4rem 1.5rem;
+      background: var(--cds-ui-02);
+      border-radius: 8px;
+      border: 1px dashed var(--cds-ui-03);
+      margin: 2rem 0;
+    }
+
+    .empty-state.visible {
+      display: block;
+    }
+
+    .empty-icon {
+      width: 48px;
+      height: 48px;
+      fill: var(--cds-text-03);
+      margin-bottom: 1rem;
+    }
+
+    .empty-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--cds-text-01);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-desc {
+      color: var(--cds-text-02);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .empty-reset-btn {
+      background: var(--brand-gradient);
+      color: #ffffff;
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .empty-reset-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    /* Footer */
+    footer {
+      background: #161616;
+      color: #8d8d8d;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+      border-top: 1px solid #262626;
+    }
+
+    .footer-container {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      color: #c6c6c6;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 2.5rem 1rem 2rem;
+      }
+      .hero-title {
+        font-size: 1.75rem;
+      }
+      .hero-subtitle {
+        font-size: 0.95rem;
+      }
+      .category-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        flex-wrap: nowrap;
+      }
+      .controls-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      .toggle-all-btns {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      .faq-question {
+        font-size: 0.975rem;
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 0.6rem 0.75rem;
+      }
+      .header-logo {
+        gap: 0.5rem;
+      }
+      .header-logo-text {
+        font-size: 0.95rem;
+      }
+      .header-actions {
+        gap: 0.5rem;
+      }
+      .lang-btn {
+        padding: 0.35rem 0.55rem;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="header-logo">
+        <a href="https://www.ibm.com/products/bob" target="_blank" rel="noopener noreferrer" class="header-logo-link" id="logoLink" aria-label="IBM Bob 公式ページ（新しいタブで開く）">
+          <img src="bob.svg" alt="IBM Bob Logo">
+        </a>
+        <span class="header-logo-text" id="headerTitle">IBM Bob FAQ</span>
+      </div>
+      <div class="header-actions">
+        <div class="lang-switcher" role="group" aria-label="Language selection">
+          <button type="button" class="lang-btn active" data-lang="ja" id="btnLangJa">日本語</button>
+          <button type="button" class="lang-btn" data-lang="en" id="btnLangEn">English</button>
+        </div>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="ダークテーマに切り替え" title="ダークテーマに切り替え">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM12 2l-1 0v3h2V2zm0 17h-2v3h2v-3zM4.22 5.64 5.64 4.22 7.76 6.34 6.34 7.76 4.22 5.64zm12.02 12.02 1.42-1.42 2.12 2.12-1.42 1.42-2.12-2.12zM2 11v2h3v-2H2zm17 0v2h3v-2h-3zM4.22 18.36l2.12-2.12 1.42 1.42-2.12 2.12-1.42-1.42zM16.24 6.34l2.12-2.12 1.42 1.42-2.12 2.12-1.42-1.42z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero & Search Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <h1 class="hero-title" id="heroTitle">よくあるご質問</h1>
+      <p class="hero-subtitle" id="heroSubtitle">IBM Bobの使い方、機能、仕様に関する疑問にお答えします</p>
+      
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="キーワードでFAQを検索（例: モード、MCP、コマンド...）" 
+          aria-label="FAQ検索"
+          autocomplete="off"
+        >
+        <button type="button" id="searchClear" class="search-clear" aria-label="検索をクリア">&times;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Category Tabs -->
+    <nav class="category-nav" id="categoryNav" aria-label="カテゴリナビゲーション">
+      <!-- Generated by JS -->
+    </nav>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <div class="results-count" id="resultsCount">表示中: 16 件の質問</div>
+      <div class="toggle-all-btns">
+        <button type="button" class="action-btn" id="btnExpandAll">すべて開く</button>
+        <button type="button" class="action-btn" id="btnCollapseAll">すべて閉じる</button>
+      </div>
+    </div>
+
+    <!-- FAQ Accordion Container -->
+    <div id="faqContainer">
+      <!-- Generated by JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState" role="region" aria-live="polite">
+      <svg class="empty-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+      </svg>
+      <h2 class="empty-title" id="emptyTitle">一致するFAQが見つかりませんでした</h2>
+      <p class="empty-desc" id="emptyDesc">検索キーワードを変更するか、フィルタを解除してお試しください。</p>
+      <button type="button" class="empty-reset-btn" id="emptyResetBtn">検索をリセット</button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="https://github.com/YutaNonaka/ibm-bob-basic-hands-on-rd2scm-v2-guide" target="_blank" rel="noopener noreferrer" id="footerGuideLink">ハンズオンガイド</a>
+        <a href="qa.md" target="_blank" rel="noopener noreferrer" id="footerSourceLink">qa.md (原本)</a>
+      </div>
+      <p id="footerCopyright">&copy; 2026 IBM Bob Basic Hands-on. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // FAQ Data extracted and translated from qa.md
+    const FAQ_DATA = [
+      {
+        id: "general",
+        category: {
+          ja: "General（全般）",
+          en: "General"
+        },
+        items: [
+          {
+            id: "q1",
+            question: {
+              ja: "Bobとは何ですか？",
+              en: "What is Bob?"
+            },
+            answer: {
+              ja: "<p>Bobは、コードの記述、既存コードのリファクタリング、およびさまざまなタスクの完了を支援するAI搭載のコーディングコンパニオンです。Bobの機能は、カスタムモードやカスタム指示（プロンプト）によって拡張できます。</p>",
+              en: "<p>Bob is an AI-powered coding companion that can help you write code, refactor existing code, and complete various tasks. Bob's capabilities can be extended with custom modes and instructions.</p>"
+            }
+          },
+          {
+            id: "q2",
+            question: {
+              ja: "Bobはどのように動作しますか？",
+              en: "How does Bob work?"
+            },
+            answer: {
+              ja: "<p>Bobは大規模言語モデル（LLM）を使用してリクエストを理解し、それらを実際のアクションに変換します。主な機能は以下の通りです：</p><ul><li>プロジェクト内のファイルの読み取りと書き込み</li><li>ターミナルでのコマンド実行</li><li>インターネットの閲覧（有効化されている場合）</li><li>Model Context Protocol（MCP）を介した外部ツールの利用</li></ul><p>チャットインターフェースを通じてBobと対話し、指示を与えて提案されたアクションを確認・承認します。</p>",
+              en: "<p>Bob uses large language models (LLMs) to understand your requests and translate them into actions. It can:</p><ul><li>Read and write files in your project.</li><li>Run commands in your terminal.</li><li>Browse the internet (if enabled).</li><li>Use external tools via the Model Context Protocol (MCP).</li></ul><p>You interact with Bob through a chat interface, where you provide instructions and review/approve its proposed actions.</p>"
+            }
+          },
+          {
+            id: "q3",
+            question: {
+              ja: "Bobは何ができますか？",
+              en: "What can Bob do?"
+            },
+            answer: {
+              ja: "<p>Bobは次のような多様なコーディングタスクを支援できます：</p><ul><li>自然言語の記述からのコード生成</li><li>既存コードのリファクタリング</li><li>バグの修正</li><li>ドキュメントの作成</li><li>コードの解説・説明</li><li>コードベースに関する質問への回答</li><li>反復作業の自動化</li><li>新しいファイルやプロジェクトの作成</li></ul>",
+              en: "<p>Bob can help with a variety of coding tasks, including:</p><ul><li>Generating code from natural language descriptions.</li><li>Refactoring existing code.</li><li>Fixing bugs.</li><li>Writing documentation.</li><li>Explaining code.</li><li>Answering questions about your codebase.</li><li>Automating repetitive tasks.</li><li>Creating new files and projects.</li></ul>"
+            }
+          },
+          {
+            id: "q4",
+            question: {
+              ja: "Bobで処理する特定のデータ型に制限はありますか？",
+              en: "Are there any restrictions on processing certain data types with Bob?"
+            },
+            answer: {
+              ja: "<p>以下のデータ型はBobで処理してはなりません：</p><ul><li><strong>SPI</strong>（機微な個人情報）</li><li><strong>Personal Health Information (PHI)</strong>（個人健康情報）</li><li><strong>Export Regulated</strong>（輸出規制データ: ITAR, APPなど）</li><li><strong>Regulated Financial Data</strong>（規制対象の財務データ: 銀行口座番号、PAN、非公開財務データなど）</li></ul>",
+              en: "<p>The following data types should not be processed with Bob:</p><ul><li><strong>SPI</strong></li><li><strong>Personal Health Information (PHI)</strong></li><li><strong>Export Regulated (ITAR, APP etc)</strong></li><li><strong>Regulated Financial Data (Banking numbers, PANs, non-public financial data)</strong></li></ul>"
+            }
+          },
+          {
+            id: "q5",
+            question: {
+              ja: "Bobを使用する際のリスクは何ですか？",
+              en: "What are the risks of using Bob?"
+            },
+            answer: {
+              ja: "<p>Bobは強力なツールですが、責任を持って使用することが重要です。以下の点にご注意ください：</p><ul><li><strong>Bobは誤りを犯す可能性があります。</strong> 変更を承認する前に、Bobが提案した変更内容を常に慎重に確認してください。</li><li><strong>Bobはコマンドを実行できます。</strong> 特にコマンドの自動承認（auto-approval）を使用している場合は、コマンドの実行を依頼する際に十分注意してください。</li></ul>",
+              en: "<p>Bob is a powerful tool, and it's important to use it responsibly. Remember:</p><ul><li><strong>Bob can make mistakes.</strong> Always review Bob's proposed changes carefully before approving them.</li><li><strong>Bob can execute commands.</strong> Be cautious when asking Bob to run commands, especially if you're using auto-approval.</li></ul>"
+            }
+          }
+        ]
+      },
+      {
+        id: "usage",
+        category: {
+          ja: "Usage（使い方）",
+          en: "Usage"
+        },
+        items: [
+          {
+            id: "q6",
+            question: {
+              ja: "新しいタスクを開始するにはどうすればよいですか？",
+              en: "How do I start a new task?"
+            },
+            answer: {
+              ja: "<p>Bobパネルを開き、チャットボックスにタスク内容を入力します。Bobに実行させたい内容を明確かつ具体的に記述してください。</p>",
+              en: "<p>Open the Bob panel and type your task in the chat box. Be clear and specific about what you want Bob to do.</p>"
+            }
+          },
+          {
+            id: "q7",
+            question: {
+              ja: "モードを切り替えるにはどうすればよいですか？",
+              en: "How do I switch between modes?"
+            },
+            answer: {
+              ja: "<p>チャット入力欄にあるドロップダウンメニューから別のモードを選択するか、<code>/</code> コマンドを使用して特定のモードに切り替えます。</p>",
+              en: "<p>Use the dropdown menu in the chat input area to select a different mode, or use the <code>/</code> command to switch to a specific mode.</p>"
+            }
+          },
+          {
+            id: "q8",
+            question: {
+              ja: "ツールとは何ですか？どのように使用しますか？",
+              en: "What are tools and how do I use them?"
+            },
+            answer: {
+              ja: "<p>ツールはBobがシステムと対話するための仕組みです。Bobはタスクを完了するために適切なツールを自動的に選択して使用します。ユーザーがツールを直接呼び出す必要はありません。ツールの使用ごとに承認または拒否を求めるプロンプトが表示されます。</p>",
+              en: "<p>Tools are how Bob interacts with your system. Bob automatically selects and uses the appropriate tools to complete your tasks. You don't need to call tools directly. You will be prompted to approve or reject each tool use.</p>"
+            }
+          },
+          {
+            id: "q9",
+            question: {
+              ja: "コンテキストメンションとは何ですか？",
+              en: "What are context mentions?"
+            },
+            answer: {
+              ja: "<p>コンテキストメンションは、プロジェクトに関する特定の情報（ファイル、フォルダ、問題点など）をBobに提供する方法です。メンションしたい項目の前に <code>@</code> 記号を付けて使用します（例: <code>@/src/file.ts</code>, <code>@problems</code>）。</p>",
+              en: "<p>Context mentions are a way to provide Bob with specific information about your project, such as files, folders, or problems. Use the <code>@</code> symbol followed by the item you want to mention (e.g., <code>@/src/file.ts</code>, <code>@problems</code>).</p>"
+            }
+          },
+          {
+            id: "q10",
+            question: {
+              ja: "Bobはターミナルでコマンドを実行できますか？",
+              en: "Can Bob run commands in my terminal?"
+            },
+            answer: {
+              ja: "<p>はい、Bobはコマンドを実行できます。コマンドの自動承認を有効にしていない限り、各コマンドの承認プロンプトが表示されます。コマンドの自動承認を有効にする場合は、細心の注意を払ってください。</p>",
+              en: "<p>Yes, Bob can run commands. You will be prompted to approve each command, unless you've enabled auto-approval for commands. Be extremely cautious auto-approving commands.</p>"
+            }
+          },
+          {
+            id: "q11",
+            question: {
+              ja: "Bobにフィードバックを提供するにはどうすればよいですか？",
+              en: "How do I provide feedback to Bob?"
+            },
+            answer: {
+              ja: "<p>Bobの提案したアクションを承認または拒否することでフィードバックを提供できます。また、フィードバック入力フィールドを使用して追加のフィードバックを伝えることもできます。</p>",
+              en: "<p>You can provide feedback by approving or rejecting Bob's proposed actions. You can provide additional feedback by using the feedback field.</p>"
+            }
+          },
+          {
+            id: "q12",
+            question: {
+              ja: "Bobの動作をカスタマイズできますか？",
+              en: "Can I customize Bob's behavior?"
+            },
+            answer: {
+              ja: "<p>はい、次のいくつかの方法でBobをカスタマイズできます：</p><ul><li><strong>カスタム指示（Custom instructions）:</strong> すべてのモードに適用される一般的な指示、またはモード固有の指示を提供します。</li><li><strong>カスタムモード（Custom modes）:</strong> 独自のプロンプトや一部のツール権限を持つカスタムモードを作成します。</li><li><strong>Bobルール（Bob rules）:</strong> プロジェクトルートの <code>.bob/rules/</code> フォルダにマークダウンルールファイルを作成して追加のガイドラインを定義します。</li><li><strong>設定（Settings）:</strong> 自動承認、差分編集（diff editing）などの各種設定を調整します。</li></ul>",
+              en: "<p>Yes, you can customize Bob in several ways:</p><ul><li><strong>Custom instructions:</strong> Provide general instructions that apply to all modes, or mode-specific instructions.</li><li><strong>Custom modes:</strong> Create your own modes with tailored prompts and some tool permissions.</li><li><strong>Bob rules:</strong> Create markdown rule files in your <code>.bob/rules/</code> folder in the root of project to provide additional guidelines.</li><li><strong>Settings:</strong> Adjust various settings, such as auto-approval, diff editing, and more.</li></ul>"
+            }
+          },
+          {
+            id: "q13",
+            question: {
+              ja: "Bobには自動承認設定がありますか？",
+              en: "Does Bob have any auto approval settings?"
+            },
+            answer: {
+              ja: "<p>はい、Bobには有効にするとアクションを自動的に承認するいくつかの設定が用意されています。</p>",
+              en: "<p>Yes, Bob has a few settings that when enabled will automatically approve actions.</p>"
+            }
+          }
+        ]
+      },
+      {
+        id: "advanced",
+        category: {
+          ja: "Advanced Features（高度な機能）",
+          en: "Advanced Features"
+        },
+        items: [
+          {
+            id: "q14",
+            question: {
+              ja: "MCP（Model Context Protocol）とは何ですか？",
+              en: "What is MCP (Model Context Protocol)?"
+            },
+            answer: {
+              ja: "<p>MCPは、Bobが外部サーバーと通信できるようにするプロトコルであり、カスタムツールやリソースによってBobの機能を拡張できます。</p>",
+              en: "<p>MCP is a protocol that allows Bob to communicate with external servers, extending its capabilities with custom tools and resources.</p>"
+            }
+          },
+          {
+            id: "q15",
+            question: {
+              ja: "独自のMCPサーバーを作成できますか？",
+              en: "Can I create my own MCP servers?"
+            },
+            answer: {
+              ja: "<p>はい、独自のMCPサーバーを作成して、Bobにカスタム機能を追加することができます。</p>",
+              en: "<p>Yes, you can create your own MCP servers to add custom functionality to Bob.</p>"
+            }
+          }
+        ]
+      },
+      {
+        id: "troubleshooting",
+        category: {
+          ja: "Troubleshooting（トラブルシューティング）",
+          en: "Troubleshooting"
+        },
+        items: [
+          {
+            id: "q16",
+            question: {
+              ja: "Bobが応答しません。どうすればよいですか？",
+              en: "Bob isn't responding. What should I do?"
+            },
+            answer: {
+              ja: "<p>以下の項目を確認してください：</p><ul><li>APIキーが正しく、有効期限が切れていないことを確認してください。</li><li>インターネット接続を確認してください。</li><li>VS Codeの再起動を試してください。</li></ul>",
+              en: "<p>Try the following steps:</p><ul><li>Make sure your API key is correct and hasn't expired.</li><li>Check your internet connection.</li><li>Try restarting VS Code.</li></ul>"
+            }
+          },
+          {
+            id: "q17",
+            question: {
+              ja: "Bobが意図しない変更を行いました。元に戻すにはどうすればよいですか？",
+              en: "Bob made changes I didn't want. How do I undo them?"
+            },
+            answer: {
+              ja: "<p>BobはVS Codeの標準ファイル編集機能を使用しています。標準の「元に戻す（Undo）」コマンド（Ctrl/Cmd + Z）を使用して変更を元に戻すことができます。また、チェックポイント機能を使用してファイルに加えられた変更を元に戻すこともできます。</p>",
+              en: "<p>Bob uses VS Code's built-in file editing capabilities. You can use the standard \"Undo\" command (Ctrl/Cmd + Z) to revert changes. You can also use checkpoints to revert changes made to a file.</p>"
+            }
+          }
+        ]
+      }
+    ];
+
+    // UI Translations
+    const UI_I18N = {
+      ja: {
+        pageTitle: "IBM Bob FAQ - よくあるご質問",
+        headerTitle: "IBM Bob FAQ",
+        heroTitle: "よくあるご質問",
+        heroSubtitle: "IBM Bobの使い方、機能、仕様に関する疑問にお答えします",
+        searchPlaceholder: "キーワードでFAQを検索（例: モード、MCP、コマンド...）",
+        allCategories: "すべて",
+        resultsCountPrefix: "表示中: ",
+        resultsCountSuffix: " 件の質問",
+        expandAll: "すべて開く",
+        collapseAll: "すべて閉じる",
+        emptyTitle: "一致するFAQが見つかりませんでした",
+        emptyDesc: "検索キーワードを変更するか、フィルタを解除してお試しください。",
+        emptyReset: "検索をリセット",
+        guideLink: "ハンズオンガイド",
+        sourceLink: "qa.md (原本)",
+        logoAriaLabel: "IBM Bob 公式ページ（新しいタブで開く）",
+        themeToDark: "ダークテーマに切り替え",
+        themeToLight: "ライトテーマに切り替え"
+      },
+      en: {
+        pageTitle: "IBM Bob FAQ - Frequently Asked Questions",
+        headerTitle: "IBM Bob FAQ",
+        heroTitle: "Frequently Asked Questions",
+        heroSubtitle: "Find answers about IBM Bob's usage, features, and capabilities",
+        searchPlaceholder: "Search FAQ by keyword (e.g. modes, MCP, commands...)",
+        allCategories: "All",
+        resultsCountPrefix: "Showing: ",
+        resultsCountSuffix: " questions",
+        expandAll: "Expand All",
+        collapseAll: "Collapse All",
+        emptyTitle: "No matching FAQ found",
+        emptyDesc: "Try adjusting your search terms or clearing the category filter.",
+        emptyReset: "Reset Search",
+        guideLink: "Hands-on Guide",
+        sourceLink: "qa.md (Source)",
+        logoAriaLabel: "IBM Bob official page (opens in a new tab)",
+        themeToDark: "Switch to dark theme",
+        themeToLight: "Switch to light theme"
+      }
+    };
+
+    // State
+    let currentLang = 'ja';
+    let currentCategory = 'all';
+    let searchQuery = '';
+    const openItemIds = new Set(); // Stores opened question IDs
+
+    // DOM Elements
+    const searchInput = document.getElementById('searchInput');
+    const searchClear = document.getElementById('searchClear');
+    const categoryNav = document.getElementById('categoryNav');
+    const faqContainer = document.getElementById('faqContainer');
+    const resultsCount = document.getElementById('resultsCount');
+    const emptyState = document.getElementById('emptyState');
+    const emptyResetBtn = document.getElementById('emptyResetBtn');
+    const btnExpandAll = document.getElementById('btnExpandAll');
+    const btnCollapseAll = document.getElementById('btnCollapseAll');
+    const btnLangJa = document.getElementById('btnLangJa');
+    const btnLangEn = document.getElementById('btnLangEn');
+    const logoLink = document.getElementById('logoLink');
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Theme helpers
+    function getTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    }
+
+    function updateThemeToggleLabel() {
+      const i18n = UI_I18N[currentLang];
+      const label = getTheme() === 'dark' ? i18n.themeToLight : i18n.themeToDark;
+      themeToggle.setAttribute('aria-label', label);
+      themeToggle.setAttribute('title', label);
+    }
+
+    // Helper: Escape Regex
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    // Helper: Highlight text
+    function highlightMatch(text, query) {
+      if (!query) return text;
+      // Match tags first (and leave them untouched) so only text content is highlighted
+      const regex = new RegExp(`(<[^>]+>)|(${escapeRegExp(query)})`, 'gi');
+      return text.replace(regex, (match, tag, hit) =>
+        tag ? tag : `<mark class="highlight">${hit}</mark>`
+      );
+    }
+
+    // Update Static UI Text on Language Change
+    function updateUIText() {
+      const i18n = UI_I18N[currentLang];
+      document.title = i18n.pageTitle;
+      document.documentElement.lang = currentLang;
+      document.getElementById('headerTitle').textContent = i18n.headerTitle;
+      document.getElementById('heroTitle').textContent = i18n.heroTitle;
+      document.getElementById('heroSubtitle').textContent = i18n.heroSubtitle;
+      searchInput.placeholder = i18n.searchPlaceholder;
+      btnExpandAll.textContent = i18n.expandAll;
+      btnCollapseAll.textContent = i18n.collapseAll;
+      document.getElementById('emptyTitle').textContent = i18n.emptyTitle;
+      document.getElementById('emptyDesc').textContent = i18n.emptyDesc;
+      emptyResetBtn.textContent = i18n.emptyReset;
+      document.getElementById('footerGuideLink').textContent = i18n.guideLink;
+      document.getElementById('footerSourceLink').textContent = i18n.sourceLink;
+      logoLink.setAttribute('aria-label', i18n.logoAriaLabel);
+      updateThemeToggleLabel();
+
+      btnLangJa.classList.toggle('active', currentLang === 'ja');
+      btnLangEn.classList.toggle('active', currentLang === 'en');
+    }
+
+    // Render Category Tabs
+    function renderCategoryNav(totalMatchingCount) {
+      const i18n = UI_I18N[currentLang];
+      let html = `
+        <button type="button" class="cat-btn ${currentCategory === 'all' ? 'active' : ''}" data-cat="all">
+          <span>${i18n.allCategories}</span>
+          <span class="cat-badge">${totalMatchingCount}</span>
+        </button>
+      `;
+
+      FAQ_DATA.forEach(cat => {
+        // Count items matching query in this category
+        const count = cat.items.filter(item => isItemMatch(item, searchQuery)).length;
+        const catName = cat.category[currentLang];
+        html += `
+          <button type="button" class="cat-btn ${currentCategory === cat.id ? 'active' : ''}" data-cat="${cat.id}">
+            <span>${catName}</span>
+            <span class="cat-badge">${count}</span>
+          </button>
+        `;
+      });
+
+      categoryNav.innerHTML = html;
+
+      // Attach Tab Click Events
+      categoryNav.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentCategory = btn.getAttribute('data-cat');
+          render();
+        });
+      });
+    }
+
+    // Check if an item matches the search query
+    function isItemMatch(item, query) {
+      if (!query) return true;
+      const q = query.toLowerCase();
+      const questionText = (item.question[currentLang] || '').toLowerCase();
+      // Strip HTML tags for clean plain-text match
+      const answerPlain = (item.answer[currentLang] || '').replace(/<[^>]+>/g, ' ').toLowerCase();
+      return questionText.includes(q) || answerPlain.includes(q);
+    }
+
+    // Render FAQ List
+    function render() {
+      updateUIText();
+
+      const q = searchQuery.trim();
+      let totalMatchingItems = 0;
+      let html = '';
+
+      FAQ_DATA.forEach(catGroup => {
+        // Check category filter
+        const isCatMatch = (currentCategory === 'all' || currentCategory === catGroup.id);
+        const matchingItems = catGroup.items.filter(item => isItemMatch(item, q));
+
+        if (isCatMatch && matchingItems.length > 0) {
+          totalMatchingItems += matchingItems.length;
+
+          html += `
+            <section class="faq-category-section" id="cat-${catGroup.id}">
+              <h2 class="faq-category-title">${catGroup.category[currentLang]}</h2>
+              <div class="faq-list">
+          `;
+
+          matchingItems.forEach(item => {
+            const isOpen = openItemIds.has(item.id);
+            let questionHtml = item.question[currentLang];
+            let answerHtml = item.answer[currentLang];
+
+            if (q) {
+              questionHtml = highlightMatch(questionHtml, q);
+              // For answer, we highlight inside text nodes (safe simple replacement)
+              answerHtml = highlightMatch(answerHtml, q);
+            }
+
+            html += `
+              <div class="faq-item ${isOpen ? 'open' : ''}" data-id="${item.id}">
+                <button type="button" class="faq-question" aria-expanded="${isOpen}" aria-controls="ans-${item.id}">
+                  <span>${questionHtml}</span>
+                  <svg class="faq-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                  </svg>
+                </button>
+                <div class="faq-answer-wrapper" id="ans-${item.id}" ${isOpen ? 'style="max-height: 2000px;"' : ''}>
+                  <div class="faq-answer">
+                    ${answerHtml}
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+
+          html += `
+              </div>
+            </section>
+          `;
+        } else if (currentCategory === 'all') {
+          // just count
+          totalMatchingItems += matchingItems.length;
+        }
+      });
+
+      // Update FAQ Container
+      faqContainer.innerHTML = html;
+
+      // Category Navigation Bar
+      renderCategoryNav(totalMatchingItems);
+
+      // Results count text
+      const i18n = UI_I18N[currentLang];
+      resultsCount.textContent = `${i18n.resultsCountPrefix}${totalMatchingItems}${i18n.resultsCountSuffix}`;
+
+      // Empty State Handling
+      if (totalMatchingItems === 0) {
+        faqContainer.style.display = 'none';
+        emptyState.classList.add('visible');
+      } else {
+        faqContainer.style.display = 'block';
+        emptyState.classList.remove('visible');
+      }
+
+      // Attach Accordion Toggle Handlers
+      faqContainer.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const itemEl = btn.closest('.faq-item');
+          const itemId = itemEl.getAttribute('data-id');
+          const wrapper = itemEl.querySelector('.faq-answer-wrapper');
+
+          if (openItemIds.has(itemId)) {
+            openItemIds.delete(itemId);
+            itemEl.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+            wrapper.style.maxHeight = '0px';
+          } else {
+            openItemIds.add(itemId);
+            itemEl.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+            wrapper.style.maxHeight = wrapper.scrollHeight + 50 + 'px';
+          }
+        });
+      });
+    }
+
+    // Event Listeners
+
+    // Search Input
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      searchClear.classList.toggle('visible', searchQuery.length > 0);
+      render();
+    });
+
+    // Clear Search Button
+    searchClear.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      searchClear.classList.remove('visible');
+      searchInput.focus();
+      render();
+    });
+
+    // Reset Search in Empty State
+    emptyResetBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      currentCategory = 'all';
+      searchClear.classList.remove('visible');
+      searchInput.focus();
+      render();
+    });
+
+    // Language Buttons
+    btnLangJa.addEventListener('click', () => {
+      if (currentLang !== 'ja') {
+        currentLang = 'ja';
+        render();
+      }
+    });
+
+    btnLangEn.addEventListener('click', () => {
+      if (currentLang !== 'en') {
+        currentLang = 'en';
+        render();
+      }
+    });
+
+    // Theme Toggle
+    themeToggle.addEventListener('click', () => {
+      const next = getTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('theme', next);
+      } catch (e) { /* localStorage unavailable */ }
+      updateThemeToggleLabel();
+    });
+
+    // Expand All / Collapse All
+    btnExpandAll.addEventListener('click', () => {
+      FAQ_DATA.forEach(cat => {
+        cat.items.forEach(item => openItemIds.add(item.id));
+      });
+      render();
+    });
+
+    btnCollapseAll.addEventListener('click', () => {
+      openItemIds.clear();
+      render();
+    });
+
+    // Initial Render
+    render();
+  </script>
+</body>
+</html>
